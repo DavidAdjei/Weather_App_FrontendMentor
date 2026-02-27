@@ -1,34 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
+import axios from 'axios';
+import { HourlyComp } from './components/mini/HourlyComp';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [hourlyData, setHourlyData] = useState({});
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const getData = async () => {
+      setLoading(true)
+      const { data } = await axios.get("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m");
+      
+      const {time, temperature_2m} = data;
+      const now = new Date();
+      const nowIso = now.toISOString().slice(0, 13)
+      console.log({nowIso});
+
+      const startIndex = time.findIndex(t => t.startsWith(nowIso));
+
+      const next8 = {
+        time: time.slice(startIndex, startIndex + 8),
+        temp: temperature_2m.slice(startIndex, startIndex + 8)
+      }
+      console.log({ next8 });
+      setHourlyData(next8)
+      return data;
+    }
+    getData()
+  }, [hourlyData])
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className='flex py-10 bg-cyan-900'>
+      {/* <HourlyComp/> */}
+    </div>
   )
 }
 
