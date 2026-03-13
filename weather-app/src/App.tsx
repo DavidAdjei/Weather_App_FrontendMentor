@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios';
-import { HourlyComp } from './components/mini/HourlyComp';
+// import { HourlyComp } from './components/mini/HourlyComp';
+import { Header } from './components/main/Header';
 
 function App() {
   const [hourlyData, setHourlyData] = useState({});
@@ -30,8 +31,8 @@ function App() {
   }, [hourlyData])
 
   return (
-    <div className='flex py-10 bg-cyan-900'>
-      {/* <HourlyComp/> */}
+    <div className="w-full flex bg-neutral-900">
+      <Header/>
     </div>
   )
 }
