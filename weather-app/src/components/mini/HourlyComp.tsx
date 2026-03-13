@@ -13,7 +13,7 @@ type HourlyCompProps = {
     code: number
 };
 
-const getWeatherIcon = (code: number) => {
+export const getWeatherIcon = (code: number) => {
     if (code === 0) return Sun
     if (code <= 2) return PartCloud
     if (code === 3) return Cloud
@@ -25,12 +25,12 @@ const getWeatherIcon = (code: number) => {
 }
 export const HourlyComp = ({ time, temp, code }: HourlyCompProps) => {
     return (
-        <div className="w-full flex items-center justify-between bg-neutral-700 text-white px-4 py-2 rounded-md">
-            <div className="flex items-center gap-2">
-                <img src={getWeatherIcon(code)} alt="weather icon" className="w-5 h-5" />
-                <span className="text-sm font-medium">{time}</span>
+        <div className="w-full flex items-center justify-between bg-neutral-700 text-white px-4 py-4 rounded-md">
+            <div className="flex items-center gap-3">
+                <img src={getWeatherIcon(code)} alt="weather icon" className="w-6 h-6" />
+                <span className="text-lg font-medium">{time}</span>
             </div>
-            <span className="text-sm font-semibold">{temp}°</span>
+            <span className="text-lg font-semibold">{temp}°</span>
         </div>
     )
 }

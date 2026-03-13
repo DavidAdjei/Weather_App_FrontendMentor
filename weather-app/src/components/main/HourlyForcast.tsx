@@ -5,14 +5,14 @@ import { HourlyComp } from "../mini/HourlyComp";
 // ----------------------------
 // Types
 // ----------------------------
-type HourlyData = {
+export type HourlyData = {
   time: string[];
   temp: number[];
   weathercode: number[];
 };
 
 type HourlyForecastProps = {
-  hourlyData?: HourlyData;
+  hourlyData: HourlyData;
 };
 
 // ----------------------------
@@ -63,23 +63,23 @@ export const HourlyForecast = ({ hourlyData }: HourlyForecastProps) => {
   }));
 
   return (
-    <aside className="bg-neutral-800 rounded-2xl p-6 w-full md:w-[320px]">
+    <aside className="bg-neutral-800 rounded-2xl p-6 w-full md:w-[500px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-neutral-0 font-semibold text-lg">Hourly forecast</h2>
-        <select className="bg-neutral-700 text-neutral-200 px-3 py-1 rounded-lg text-sm outline-none">
+        <h2 className="text-neutral-0 font-semibold text-xl">Hourly forecast</h2>
+        <select className="bg-neutral-700 text-neutral-200 px-3 py-3 rounded-lg text-lg outline-none">
           <option>Tuesday</option>
           <option>Wednesday</option>
         </select>
       </div>
 
       {/* Hourly list */}
-      <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto pr-1">
+      <div className="flex flex-col gap-3 max-h-[600px] overflow-y-auto pr-1">
         {hourlyList.map((hour, index) => (
           <HourlyComp
             key={index}
             time={hour.time}
-            temp={hour.temp}
+            temp={Math.round(hour.temp)}
             code={hour.code}
           />
         ))}

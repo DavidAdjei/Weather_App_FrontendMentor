@@ -10,7 +10,7 @@ export const Intro = () => {
       </h1>
 
       {/* Search Area */}
-      <div className="w-full max-w-[850px] mt-8 flex flex-col md:flex-row gap-4">
+      <div className="w-full max-w-[850px] mt-8 flex flex-col md:flex-row gap-4 mb-8">
 
         {/* Input */}
         <div className="flex items-center bg-neutral-800 rounded-xl px-4 py-3 flex-1">

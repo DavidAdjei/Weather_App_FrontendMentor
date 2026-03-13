@@ -1,42 +1,62 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios';
-import { Header } from './components/main/Header';
-import { Intro } from './components/main/Intro';
-import { HourlyForecast } from './components/main/HourlyForcast';
+import { Header } from './components/main/Header'
+import { Intro } from './components/main/Intro'
+import { HourlyForecastWithBoundary } from './components/main/HourlyForcast'
+import MainBanner from './components/main/MainBanner'
+import { useWeather } from './hooks/useWeather'
+import DailyForcast from './components/main/DailyForcast'
 
 function App() {
-  const [hourlyData, setHourlyData] = useState({});
-  const [loading, setLoading] = useState(false)
+  const { currentData, hourlyData, location, loading, error, dailyData } = useWeather()
 
-  useEffect(() => {
-    const getData = async () => {
-      setLoading(true)
-      const { data } = await axios.get("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,weathercode&hourly=temperature_2m,weathercode");
-
-      const { hourly } = data;
-      const { time, temperature_2m, weathercode } = hourly;
-      const now = new Date();
-      const nowIso = now.toISOString().slice(0, 13)
-
-      const startIndex = time.findIndex(t => t.startsWith(nowIso));
-
-      const next8 = {
-        time: time.slice(startIndex, startIndex + 8),
-        temp: temperature_2m.slice(startIndex, startIndex + 8),
-        code: weathercode.slice(startIndex, startIndex + 8)
-      }
-      console.log({ next8 });
-      setHourlyData(next8)
-      return data;
-    }
-    getData()
-  }, [])
+  if (loading) return <p className="text-white p-10">Loading weather...</p>
+  if (error) return <p className="text-white p-10">{error}</p>
 
   return (
-    <div className="w-full min-h-lvh flex bg-blue-700 flex-col">
+    <div className="w-full min-h-screen bg-blue-700 flex flex-col">
+
       <Header />
       <Intro />
-      <HourlyForecast hourlyData={hourlyData}/>
+
+      {/* Main content container */}
+      <main className="w-full flex justify-center px-5 md:px-20 pb-20">
+
+        {/* Responsive grid */}
+        <div className="w-full max-w-7.5xl grid grid-cols-1 lg:grid-cols-[3fr_1.2fr] gap-6">
+
+          {/* LEFT SIDE */}
+          <div className="flex flex-col gap-6">
+
+            {currentData && location && (
+              <MainBanner
+                weather={{
+                  city: location.city,
+                  country:location.country,
+                  temperature: currentData.temp,
+                  weathercode: currentData.weathercode,
+                  humidity: currentData.humidity,
+                  wind: currentData.wind,
+                  feelsLike: currentData.feelsLike
+                }}
+              />
+            )}
+
+            {
+              dailyData && (
+                <DailyForcast 
+                  dailyData={dailyData}
+                />
+              )
+            }
+
+          </div>
+
+          {/* RIGHT SIDE */}
+          <div className="w-full">
+            <HourlyForecastWithBoundary hourlyData={hourlyData} />
+          </div>
+
+        </div>
+      </main>
     </div>
   )
 }
