@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Unit from '../../assets/images/icon-units.svg'
 import Drop from '../../assets/images/icon-dropdown.svg'
 import type { WeatherUnits } from '../../types/types'
-
+import UnitButton from './UnitButton'
 
 type Props = {
   units: WeatherUnits
@@ -18,6 +18,51 @@ export default function UnitsDropdown ({ units, setUnits }: Props) {
       [key]: value
     } as WeatherUnits)
   }
+
+  const data = [
+    {
+      title: 'Temperature',
+      forWhat: 'temperature' as keyof WeatherUnits,
+      content: [
+        {
+          name: 'Celsius (°C)',
+          value: 'celsius'
+        },
+        {
+          name: 'Fahrenheit (°F)',
+          value: 'fahrenheit'
+        }
+      ]
+    },
+    {
+      title: 'Wind Speed',
+      forWhat: 'windspeed' as keyof WeatherUnits,
+      content: [
+        {
+          name: 'km/h',
+          value: 'kmh'
+        },
+        {
+          name: 'mph',
+          value: 'mph'
+        }
+      ]
+    },
+    {
+      title: 'Precipitation',
+      forWhat: 'precipitation' as keyof WeatherUnits,
+      content: [
+        {
+          name: 'Millimeters (mm)',
+          value: 'mm'
+        },
+        {
+          name: 'Inches (in)',
+          value: 'inch'
+        }
+      ]
+    }
+  ]
 
   return (
     <div className='relative'>
@@ -39,93 +84,21 @@ export default function UnitsDropdown ({ units, setUnits }: Props) {
           <p className='text-neutral-200 text-sm font-semibold'>
             Switch to Imperial
           </p>
-
-          {/* Temperature */}
-          <div>
-            <p className='text-neutral-400 text-xs mb-1'>Temperature</p>
-
-            <button
-              onClick={() => updateUnit('temperature', 'celsius')}
-              className={`w-full flex justify-between px-3 py-2 rounded-md ${
-                units.temperature === 'celsius'
-                  ? 'bg-neutral-700 text-white'
-                  : 'text-neutral-300'
-              }`}
-            >
-              Celsius (°C)
-              {units.temperature === 'celsius' && '✓'}
-            </button>
-
-            <button
-              onClick={() => updateUnit('temperature', 'fahrenheit')}
-              className={`w-full flex justify-between px-3 py-2 rounded-md ${
-                units.temperature === 'fahrenheit'
-                  ? 'bg-neutral-700 text-white'
-                  : 'text-neutral-300'
-              }`}
-            >
-              Fahrenheit (°F)
-              {units.temperature === 'fahrenheit' && '✓'}
-            </button>
-          </div>
-
-          {/* Wind */}
-          <div>
-            <p className='text-neutral-400 text-xs mb-1'>Wind Speed</p>
-
-            <button
-              onClick={() => updateUnit('windspeed', 'kmh')}
-              className={`w-full flex justify-between px-3 py-2 rounded-md ${
-                units.windspeed === 'kmh'
-                  ? 'bg-neutral-700 text-white'
-                  : 'text-neutral-300'
-              }`}
-            >
-              km/h
-              {units.windspeed === 'kmh' && '✓'}
-            </button>
-
-            <button
-              onClick={() => updateUnit('windspeed', 'mph')}
-              className={`w-full flex justify-between px-3 py-2 rounded-md ${
-                units.windspeed === 'mph'
-                  ? 'bg-neutral-700 text-white'
-                  : 'text-neutral-300'
-              }`}
-            >
-              mph
-              {units.windspeed === 'mph' && '✓'}
-            </button>
-          </div>
-
-          {/* Precipitation */}
-          <div>
-            <p className='text-neutral-400 text-xs mb-1'>Precipitation</p>
-
-            <button
-              onClick={() => updateUnit('precipitation', 'mm')}
-              className={`w-full flex justify-between px-3 py-2 rounded-md ${
-                units.precipitation === 'mm'
-                  ? 'bg-neutral-700 text-white'
-                  : 'text-neutral-300'
-              }`}
-            >
-              Millimeters (mm)
-              {units.precipitation === 'mm' && '✓'}
-            </button>
-
-            <button
-              onClick={() => updateUnit('precipitation', 'inch')}
-              className={`w-full flex justify-between px-3 py-2 rounded-md ${
-                units.precipitation === 'inch'
-                  ? 'bg-neutral-700 text-white'
-                  : 'text-neutral-300'
-              }`}
-            >
-              Inches (in)
-              {units.precipitation === 'inch' && '✓'}
-            </button>
-          </div>
+          {data.map((dt, i) => (
+            <div key={i}>
+              <p className='text-neutral-400 text-xs mb-1'>{dt.title}</p>
+              {dt.content.map((val, index) => (
+                <UnitButton
+                  key={index}
+                  units={units}
+                  updateUnit={updateUnit}
+                  name={val.name}
+                  value={val.value}
+                  forWhat={dt.forWhat}
+                />
+              ))}
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -1,56 +1,14 @@
-import { Component } from 'react'
-import type { ReactNode } from 'react'
 import { HourlyComp } from '../mini/HourlyComp'
 import DayDropdown from '../mini/DayDropdown'
-// ----------------------------
-// Types
-// ----------------------------
-export type HourlyData = {
-  time: string[]
-  temp: number[]
-  weathercode: number[]
-}
+import type { HourlyWeather } from '../../types/types'
 
 type HourlyForecastProps = {
-  hourlyData?: HourlyData
+  hourlyData?: HourlyWeather
   selectedDay: string
   setSelectedDay: (day: string) => void
   loading: boolean
 }
 
-// ----------------------------
-// Error Boundary
-// ----------------------------
-class ForecastErrorBoundary extends Component<
-  { children: ReactNode },
-  { hasError: boolean }
-> {
-  state = { hasError: false }
-
-  static getDerivedStateFromError () {
-    return { hasError: true }
-  }
-
-  componentDidCatch (error: Error, info: unknown) {
-    console.error('HourlyForecast error:', error, info)
-  }
-
-  render () {
-    if (this.state.hasError) {
-      return (
-        <aside className='bg-neutral-800 rounded-2xl p-6 w-full md:w-[320px] text-red-400'>
-          Something went wrong loading the forecast.
-        </aside>
-      )
-    }
-
-    return this.props.children
-  }
-}
-
-// ----------------------------
-// HourlyForecast Component
-// ----------------------------
 export const HourlyForecast = ({
   hourlyData,
   selectedDay,
@@ -67,7 +25,7 @@ export const HourlyForecast = ({
         </div>
 
         <div className='flex flex-col gap-3 animate-pulse'>
-          {[...Array(8)].map((_, i) => (
+          {[...Array(7)].map((_, i) => (
             <div key={i} className='h-15 rounded-lg bg-neutral-700' />
           ))}
         </div>
@@ -112,12 +70,3 @@ export const HourlyForecast = ({
     </aside>
   )
 }
-
-// ----------------------------
-// Export with Error Boundary
-// ----------------------------
-export const HourlyForecastWithBoundary = (props: HourlyForecastProps) => (
-  <ForecastErrorBoundary>
-    <HourlyForecast {...props} />
-  </ForecastErrorBoundary>
-)

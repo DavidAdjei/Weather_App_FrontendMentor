@@ -1,11 +1,5 @@
+import type { DailyWeather } from '../../types/types'
 import DailyComp from '../mini/DailyComp'
-
-type DailyWeather = {
-  time: string[]
-  weathercode: number[]
-  maxTemp: number[]
-  minTemp: number[]
-}
 
 type DailyWeatherProp = {
   dailyData?: DailyWeather

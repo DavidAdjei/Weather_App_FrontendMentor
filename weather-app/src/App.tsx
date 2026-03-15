@@ -1,6 +1,6 @@
 import { Header } from './components/main/Header'
 import { Intro } from './components/main/Intro'
-import { HourlyForecastWithBoundary } from './components/main/HourlyForcast'
+import { HourlyForecast } from './components/main/HourlyForcast'
 import MainBanner from './components/main/MainBanner'
 import { useWeather } from './hooks/useWeather'
 import DailyForcast from './components/main/DailyForcast'
@@ -71,7 +71,7 @@ function App () {
 
           {/* RIGHT SIDE */}
           <div className='w-full'>
-            <HourlyForecastWithBoundary
+            <HourlyForecast
               hourlyData={hourlyData ? hourlyData : undefined}
               selectedDay={selectedDay}
               setSelectedDay={setSelectedDay}

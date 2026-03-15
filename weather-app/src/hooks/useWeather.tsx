@@ -1,28 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import type { WeatherUnits } from '../types/types'
-
-type CurrentWeather = {
-  time: string
-  temp: number
-  weathercode: number
-  humidity: number
-  wind: number
-  feelsLike: number
-}
-
-type HourlyWeather = {
-  time: string[]
-  temp: number[]
-  weathercode: number[]
-}
-
-type DailyWeather = {
-  time: string[]
-  weathercode: number[]
-  maxTemp: number[]
-  minTemp: number[]
-}
+import type { CurrentWeather, DailyWeather, HourlyWeather, WeatherUnits } from '../types/types'
 
 type Location = {
   city: string

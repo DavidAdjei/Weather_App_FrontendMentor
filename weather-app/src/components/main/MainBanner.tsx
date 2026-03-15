@@ -3,6 +3,7 @@ import BgToday from '../../assets/images/bg-today-large.svg'
 import BgMobile from '../../assets/images/bg-today-small.svg'
 import { getWeatherIcon } from '../mini/HourlyComp'
 import type { WeatherUnits } from '../../types/types'
+import Condition from '../mini/Condition'
 
 type CurrentWeather = {
   city: string
@@ -20,7 +21,11 @@ type MainBannerProps = {
   units?: WeatherUnits
 }
 
-export default function MainBanner ({ weather, loading, units }: MainBannerProps) {
+export default function MainBanner ({
+  weather,
+  loading,
+  units
+}: MainBannerProps) {
   const [bgImage, setBgImage] = useState(
     window.innerWidth < 1028 ? BgMobile : BgToday
   )
@@ -54,10 +59,7 @@ export default function MainBanner ({ weather, loading, units }: MainBannerProps
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
           {['Feels Like', 'Humidity', 'Wind', 'Precipitation'].map(
             (data, i) => (
-              <div className='bg-neutral-800 rounded-xl p-4 flex flex-col gap-7' key={i}>
-                <p className='text-neutral-300 text-sm'>{data}</p>
-                <p className='text-neutral-0 text-xl font-semibold'>-</p>
-              </div>
+              <Condition key={i} name={data} value='-' />
             )
           )}
         </div>
@@ -68,7 +70,7 @@ export default function MainBanner ({ weather, loading, units }: MainBannerProps
   return (
     <section className='w-full flex flex-col gap-6'>
       <div
-        className='w-full h-77 rounded-2xl p-6 md:p-8 flex items-center justify-between bg-cover bg-center'
+        className='w-full min-h-77 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between bg-cover bg-center'
         style={{
           backgroundImage: `url(${bgImage})`
         }}
@@ -102,31 +104,17 @@ export default function MainBanner ({ weather, loading, units }: MainBannerProps
       </div>
 
       <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-        <div className='bg-neutral-800 rounded-xl p-4 flex flex-col gap-7'>
-          <p className='text-neutral-300 text-sm'>Feels Like</p>
-          <p className='text-neutral-0 text-xl font-semibold'>
-            {Math.round(weather.feelsLike)}°
-          </p>
-        </div>
-
-        <div className='bg-neutral-800 rounded-xl p-4 flex flex-col gap-7'>
-          <p className='text-neutral-300 text-sm'>Humidity</p>
-          <p className='text-neutral-0 text-xl font-semibold'>
-            {weather.humidity}%
-          </p>
-        </div>
-
-        <div className='bg-neutral-800 rounded-xl p-4 flex flex-col gap-7'>
-          <p className='text-neutral-300 text-sm'>Wind</p>
-          <p className='text-neutral-0 text-xl font-semibold'>
-            {weather.wind} {units?.windspeed}
-          </p>
-        </div>
-
-        <div className='bg-neutral-800 rounded-xl p-4 flex flex-col gap-7'>
-          <p className='text-neutral-300 text-sm'>Precipitation</p>
-          <p className='text-neutral-0 text-xl font-semibold'>0 {units?.precipitation === "mm" ? "mm" : "In"}</p>
-        </div>
+        {[
+          { name: 'Feels Like', value: `${Math.round(weather.feelsLike)}°` },
+          { name: 'Humidity', value: `${weather.humidity}%` },
+          { name: 'Wind', value: `${weather.wind} ${units?.windspeed}` },
+          {
+            name: 'Precipitation',
+            value: `0 ${units?.precipitation === 'mm' ? 'mm' : 'In'}`
+          }
+        ].map((data, i) => (
+          <Condition key={i} name={data.name} value={data.value} />
+        ))}
       </div>
     </section>
   )
