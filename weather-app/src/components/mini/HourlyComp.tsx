@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import Cloud from "../../assets/images/icon-overcast.webp"
 import Sun from "../../assets/images/icon-sunny.webp"
 import Rain from "../../assets/images/icon-rain.webp"

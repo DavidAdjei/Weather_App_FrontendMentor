@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import type { WeatherUnits } from '../types/types'
 
 type CurrentWeather = {
   time: string
@@ -28,33 +29,34 @@ type Location = {
   country: string
 }
 
-export const useWeather = () => {
+export const useWeather = (units: WeatherUnits, selectedDay: string) => {
   const [currentData, setCurrentData] = useState<CurrentWeather | null>(null)
   const [hourlyData, setHourlyData] = useState<HourlyWeather | null>(null)
   const [dailyData, setDailyData] = useState<DailyWeather | null>(null)
   const [location, setLocation] = useState<Location | null>(null)
 
   const [loading, setLoading] = useState(false)
+  const [hourlyLoad, setHourlyLoad] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-
-    const fetchWeather = async (lat: number, lon: number) => {
+    const fetchMainWeather = async (lat: number, lon: number) => {
       try {
         setLoading(true)
 
         const weatherUrl =
           `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
           `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,apparent_temperature,weathercode` +
-          `&hourly=temperature_2m,weathercode` +
           `&daily=weathercode,temperature_2m_max,temperature_2m_min` +
+          `&temperature_unit=${units.temperature}` +
+          `&windspeed_unit=${units.windspeed}` +
+          `&precipitation_unit=${units.precipitation}` +
           `&timezone=auto`
 
         const { data } = await axios.get(weatherUrl)
-        console.log({data})
-        const { current, hourly, daily } = data
 
-        // CURRENT WEATHER
+        const { current, daily } = data
+
         setCurrentData({
           time: current.time,
           temp: current.temperature_2m,
@@ -64,22 +66,6 @@ export const useWeather = () => {
           feelsLike: current.apparent_temperature
         })
 
-        // HOURLY WEATHER (NEXT 8 HOURS)
-        const { time, temperature_2m, weathercode } = hourly
-
-        const nowIso = new Date().toISOString().slice(0, 13)
-
-        const startIndex = time.findIndex((t: string) =>
-          t.startsWith(nowIso)
-        )
-
-        setHourlyData({
-          time: time.slice(startIndex, startIndex + 8),
-          temp: temperature_2m.slice(startIndex, startIndex + 8),
-          weathercode: weathercode.slice(startIndex, startIndex + 8)
-        })
-
-        // DAILY WEATHER (NEXT 7 DAYS)
         setDailyData({
           time: daily.time.slice(0, 7),
           weathercode: daily.weathercode.slice(0, 7),
@@ -87,7 +73,6 @@ export const useWeather = () => {
           minTemp: daily.temperature_2m_min.slice(0, 7)
         })
 
-        // REVERSE GEOCODING
         const geoRes = await axios.get(
           `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
         )
@@ -96,25 +81,70 @@ export const useWeather = () => {
           city: geoRes.data.city || geoRes.data.locality,
           country: geoRes.data.countryName
         })
-
       } catch (err) {
-        console.error(err)
-        setError("Failed to fetch weather")
+        console.log(err)
+        setError('Failed to fetch weather')
       } finally {
         setLoading(false)
       }
     }
 
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        fetchWeather(pos.coords.latitude, pos.coords.longitude)
-      },
-      () => {
-        setError("Location permission denied")
-      }
+      pos => fetchMainWeather(pos.coords.latitude, pos.coords.longitude),
+      () => setError('Location permission denied')
     )
+  }, [units])
 
-  }, [])
+  type MapType = {
+    date: Date
+    time: string
+    temp: number
+    code: number
+  }
+  useEffect(() => {
+    const fetchHourlyWeather = async (lat: number, lon: number) => {
+      try {
+        setHourlyLoad(true)
+        const weatherUrl =
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+          `&hourly=temperature_2m,weathercode` +
+          `&temperature_unit=${units.temperature}` +
+          `&timezone=auto`
+
+        const { data } = await axios.get(weatherUrl)
+
+        const { time, temperature_2m, weathercode } = data.hourly
+
+        const filtered = time
+          .map((t: string, i: number) => ({
+            date: new Date(t),
+            time: t,
+            temp: temperature_2m[i],
+            code: weathercode[i]
+          }))
+          .filter(
+            (hour: MapType) =>
+              hour.date.toLocaleDateString('en-US', { weekday: 'long' }) ===
+              selectedDay
+          )
+
+        setHourlyData({
+          time: filtered.map((h: MapType) => h.time),
+          temp: filtered.map((h: MapType) => h.temp),
+          weathercode: filtered.map((h: MapType) => h.code)
+        })
+      } catch (err) {
+        console.log(err)
+        setError('Failed to fetch weather')
+      } finally{
+        setHourlyLoad(false)
+      }
+    }
+
+    navigator.geolocation.getCurrentPosition(pos =>
+      fetchHourlyWeather(pos.coords.latitude, pos.coords.longitude)
+    )
+  }, [units, selectedDay])
 
   return {
     currentData,
@@ -122,6 +152,7 @@ export const useWeather = () => {
     dailyData,
     location,
     loading,
-    error
+    error,
+    hourlyLoad
   }
 }

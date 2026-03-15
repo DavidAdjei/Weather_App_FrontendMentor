@@ -14,7 +14,7 @@ export default function DailyComp({
   minTemp
 }: DailyCompProps) {
   return (
-    <div className="flex flex-col items-center justify-between bg-neutral-800 rounded-xl px-4 py-4 flex-1 min-w-[120px] max-w-[160px] h-[130px]">
+    <div className="flex flex-col items-center justify-between bg-neutral-800 rounded-xl px-4 py-4 flex-1 min-w-30 max-w-45 h-32.5">
 
       <span className="text-neutral-300 text-sm font-medium">
         {day}
