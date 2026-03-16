@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import type { CurrentWeather, DailyWeather, HourlyWeather, WeatherUnits } from '../types/types'
+import type { CurrentWeather, DailyWeather, HourlyWeather, Location, WeatherUnits } from '../types/types'
 
-type Location = {
-  city: string
-  country: string
-}
 
 export const useWeather = (units: WeatherUnits, selectedDay: string) => {
   const [currentData, setCurrentData] = useState<CurrentWeather | null>(null)
@@ -16,6 +12,20 @@ export const useWeather = (units: WeatherUnits, selectedDay: string) => {
   const [loading, setLoading] = useState(false)
   const [hourlyLoad, setHourlyLoad] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        setLocation({
+          city: "",
+          country: "",
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude
+        })
+      },
+      () => setError("Location permission denied")
+    )
+  }, [])
 
   useEffect(() => {
     const fetchMainWeather = async (lat: number, lon: number) => {
@@ -57,7 +67,9 @@ export const useWeather = (units: WeatherUnits, selectedDay: string) => {
 
         setLocation({
           city: geoRes.data.city || geoRes.data.locality,
-          country: geoRes.data.countryName
+          country: geoRes.data.countryName,
+          latitude: lat,
+          longitude: lon
         })
       } catch (err) {
         console.log(err)
@@ -114,7 +126,7 @@ export const useWeather = (units: WeatherUnits, selectedDay: string) => {
       } catch (err) {
         console.log(err)
         setError('Failed to fetch weather')
-      } finally{
+      } finally {
         setHourlyLoad(false)
       }
     }
@@ -131,6 +143,7 @@ export const useWeather = (units: WeatherUnits, selectedDay: string) => {
     location,
     loading,
     error,
-    hourlyLoad
+    hourlyLoad,
+    setLocation
   }
 }

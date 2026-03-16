@@ -25,3 +25,10 @@ export type HourlyWeather = {
   temp: number[]
   weathercode: number[]
 }
+
+export type Location = {
+  city: string
+  country: string
+  latitude: number
+  longitude: number
+}

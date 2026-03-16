@@ -8,7 +8,7 @@ import type { WeatherUnits } from './types/types'
 import { useState } from 'react'
 import ApiError from './components/main/ApiError'
 
-function App () {
+function App() {
   const [units, setUnits] = useState<WeatherUnits>({
     temperature: 'celsius',
     windspeed: 'kmh',
@@ -16,7 +16,7 @@ function App () {
   })
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long' })
   const [selectedDay, setSelectedDay] = useState<string>(today)
-  const { currentData, hourlyData, hourlyLoad, location, loading, error, dailyData } =
+  const { currentData, hourlyData, hourlyLoad, location, loading, error, dailyData, setLocation } =
     useWeather(units, selectedDay)
 
   const isAnyTrue = loading || hourlyLoad
@@ -33,7 +33,7 @@ function App () {
   return (
     <div className='w-full min-h-screen bg-blue-700 flex flex-col'>
       <Header units={units} setUnits={setUnits} />
-      <Intro />
+      <Intro setLocation={setLocation} />
 
       {/* Main content container */}
       <main className='w-full flex justify-center px-5 md:px-20 pb-10'>
@@ -47,14 +47,14 @@ function App () {
               weather={
                 currentData && location
                   ? {
-                      city: location.city,
-                      country: location.country,
-                      temperature: currentData.temp,
-                      weathercode: currentData.weathercode,
-                      humidity: currentData.humidity,
-                      wind: currentData.wind,
-                      feelsLike: currentData.feelsLike
-                    }
+                    city: location.city,
+                    country: location.country,
+                    temperature: currentData.temp,
+                    weathercode: currentData.weathercode,
+                    humidity: currentData.humidity,
+                    wind: currentData.wind,
+                    feelsLike: currentData.feelsLike
+                  }
                   : undefined
               }
             />
