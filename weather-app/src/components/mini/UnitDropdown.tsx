@@ -9,7 +9,7 @@ type Props = {
   setUnits: (units: WeatherUnits) => void
 }
 
-export default function UnitsDropdown ({ units, setUnits }: Props) {
+export default function UnitsDropdown({ units, setUnits }: Props) {
   const [open, setOpen] = useState(false)
 
   const updateUnit = (key: keyof WeatherUnits, value: string) => {
@@ -69,7 +69,8 @@ export default function UnitsDropdown ({ units, setUnits }: Props) {
       {/* Button */}
       <button
         onClick={() => setOpen(!open)}
-        className='flex items-center gap-1 md:gap-2 bg-neutral-800 text-neutral-200 px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-neutral-700 transition text-sm md:text-base'
+        className='flex items-center gap-1 md:gap-2 bg-neutral-800 text-neutral-200 px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-neutral-700 transition text-sm md:text-base
+        focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-neutral-700'
       >
         <img src={Unit} alt='settings' className='w-3 h-3 md:w-5 md:h-5' />
 

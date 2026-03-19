@@ -9,7 +9,7 @@ type Props = {
   forWhat: keyof WeatherUnits
 }
 
-export default function UnitButton ({
+export default function UnitButton({
   units,
   updateUnit,
   name,
@@ -21,9 +21,8 @@ export default function UnitButton ({
   return (
     <button
       onClick={() => updateUnit(forWhat, value)}
-      className={`w-full flex justify-between px-3 py-2 rounded-md ${
-        isActive ? 'bg-neutral-700 text-white' : 'text-neutral-300'
-      }`}
+      className={`w-full text-left px-3 py-2 rounded-md text-neutral-200 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-500 flex justify-between md ${isActive ? 'bg-neutral-700 text-white' : 'text-neutral-300'
+        }`}
     >
       <span>{name}</span>
       {units[forWhat] === value && <img src={Check} alt='Check' />}

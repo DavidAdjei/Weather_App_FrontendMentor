@@ -1,19 +1,21 @@
 import { HourlyComp } from '../mini/HourlyComp'
 import DayDropdown from '../mini/DayDropdown'
-import type { HourlyWeather } from '../../types/types'
+import type { HourlyWeather, WeatherUnits } from '../../types/types'
 
 type HourlyForecastProps = {
   hourlyData?: HourlyWeather
   selectedDay: string
   setSelectedDay: (day: string) => void
   loading: boolean
+  units: WeatherUnits
 }
 
 export const HourlyForecast = ({
   hourlyData,
   selectedDay,
   setSelectedDay,
-  loading
+  loading,
+  units
 }: HourlyForecastProps) => {
   if (!hourlyData || !hourlyData.time?.length || loading) {
     return (
@@ -63,7 +65,7 @@ export const HourlyForecast = ({
             key={index}
             time={hour.time}
             temp={Math.round(hour.temp)}
-            code={hour.code}
+            unit={units.temperature}
           />
         ))}
       </div>

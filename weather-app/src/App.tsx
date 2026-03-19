@@ -75,7 +75,6 @@ function App() {
                       city: location.city,
                       country: location.country,
                       temperature: currentData.temp,
-                      weathercode: currentData.weathercode,
                       humidity: currentData.humidity,
                       wind: currentData.wind,
                       feelsLike: currentData.feelsLike
@@ -91,6 +90,7 @@ function App() {
               <DailyForcast
                 dailyData={dailyData || undefined}
                 loading={loading}
+                units={units}
               />
             </div>
           </div>
@@ -102,6 +102,7 @@ function App() {
               selectedDay={selectedDay}
               setSelectedDay={setSelectedDay}
               loading={isAnyTrue}
+              units={units}
             />
           </div>
         </div>

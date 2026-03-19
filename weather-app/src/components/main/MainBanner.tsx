@@ -9,7 +9,6 @@ type CurrentWeather = {
   city: string
   country: string
   temperature: number
-  weathercode: number
   humidity: number
   wind: number
   feelsLike: number
@@ -18,7 +17,7 @@ type CurrentWeather = {
 type MainBannerProps = {
   weather?: CurrentWeather
   loading?: boolean
-  units?: WeatherUnits
+  units: WeatherUnits
 }
 
 export default function MainBanner ({
@@ -76,11 +75,11 @@ export default function MainBanner ({
         }}
       >
         <div>
-          <h2 className='text-neutral-0 text-4xl font-semibold'>
+          <h2 className='text-[2.8rem] text-center md:text-start md:text-5xl font-bold text-neutral-0'>
             {weather.city}, {weather.country}
           </h2>
 
-          <p className='text-neutral-300 text-sm mt-1'>
+          <p className='text-neutral-300 text-center md:text-start text-sm md:text-2xl mt-1'>
             {new Date().toLocaleDateString(undefined, {
               weekday: 'long',
               month: 'short',
@@ -92,12 +91,12 @@ export default function MainBanner ({
 
         <div className='flex items-center gap-6'>
           <img
-            src={getWeatherIcon(weather.weathercode)}
+            src={getWeatherIcon(weather.temperature, units.temperature)}
             alt='weather icon'
-            className='w-12 h-12 md:w-16 md:h-16'
+            className='w-35 h-35 md:w-20 md:h-20'
           />
 
-          <span className='text-5xl md:text-6xl font-bold text-neutral-0'>
+          <span className='text-8xl md:text-6xl font-bold text-neutral-0'>
             {Math.round(weather.temperature)}°
           </span>
         </div>

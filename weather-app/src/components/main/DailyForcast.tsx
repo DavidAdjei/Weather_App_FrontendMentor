@@ -1,12 +1,13 @@
-import type { DailyWeather } from '../../types/types'
+import type { DailyWeather, WeatherUnits } from '../../types/types'
 import DailyComp from '../mini/DailyComp'
 
 type DailyWeatherProp = {
   dailyData?: DailyWeather
   loading: boolean
+  units: WeatherUnits
 }
 
-export default function DailyForcast ({ dailyData, loading }: DailyWeatherProp) {
+export default function DailyForcast ({ dailyData, loading, units }: DailyWeatherProp) {
   if (loading || !dailyData) {
     return (
       <div className='flex flex-wrap gap-4 mt-4 w-full'>
@@ -22,7 +23,7 @@ export default function DailyForcast ({ dailyData, loading }: DailyWeatherProp) 
         <DailyComp
           key={date}
           day={new Date(date).toLocaleDateString('en-US', { weekday: 'short' })}
-          code={dailyData.weathercode[i]}
+          units={units}
           maxTemp={dailyData.maxTemp[i]}
           minTemp={dailyData.minTemp[i]}
         />

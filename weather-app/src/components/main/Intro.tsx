@@ -79,7 +79,7 @@ export const Intro = ({ setLocation }: Props) => {
       <div className="w-full max-w-212.5 mt-8 flex flex-col md:flex-row gap-4 mb-8 relative">
 
         {/* Input */}
-        <div className="flex items-center bg-neutral-800 rounded-xl px-4 py-3 flex-1 relative">
+        <div className="flex items-center bg-neutral-800 rounded-xl px-4 py-3 flex-1 relative focus-within:ring-2 focus-within:ring-neutral-500 focus-within:bg-neutral-700 transition">
 
           <img
             src={SearchIcon}
