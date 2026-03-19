@@ -41,7 +41,7 @@ Your users should be able to:
 ### Links
 
 - Solution URL: [Github](https://github.com/DavidAdjei/Weather_App_FrontendMentor/tree/main/weather-app)
-- Live Site URL: [Vercel App](https://your-live-site-url.com)
+- Live Site URL: [Vercel App](https://weather-app-frontend-mentor-eight.vercel.app/)
 
 ## My process
 

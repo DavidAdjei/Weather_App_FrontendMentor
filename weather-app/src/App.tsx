@@ -21,7 +21,13 @@ function App() {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long' })
   const [selectedDay, setSelectedDay] = useState<string>(today)
 
-  // ✅ Get user location
+  const defaultLocation: Location = {
+    city: "Accra",
+    country: "Ghana",
+    latitude: 5.6037,
+    longitude: -0.1870,
+  }
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       pos => {
@@ -32,7 +38,9 @@ function App() {
           longitude: pos.coords.longitude
         })
       },
-      () => setError("Location permission denied")
+      () => {
+        setLocation(defaultLocation)
+      }
     )
   }, [])
 
@@ -59,11 +67,11 @@ function App() {
   return (
     <div className='w-full min-h-screen bg-blue-700 flex flex-col'>
       <Header units={units} setUnits={setUnits} />
-      <Intro setLocation={setLocation}/>
+      <Intro setLocation={setLocation} />
 
       <main className='w-full flex justify-center px-5 md:px-20 pb-10'>
         <div className='w-full max-w-7.5xl grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-6'>
-          
+
           {/* LEFT SIDE */}
           <div className='flex flex-col gap-6'>
             <MainBanner
@@ -72,13 +80,13 @@ function App() {
               weather={
                 currentData && location
                   ? {
-                      city: location.city,
-                      country: location.country,
-                      temperature: currentData.temp,
-                      humidity: currentData.humidity,
-                      wind: currentData.wind,
-                      feelsLike: currentData.feelsLike
-                    }
+                    city: location.city,
+                    country: location.country,
+                    temperature: currentData.temp,
+                    humidity: currentData.humidity,
+                    wind: currentData.wind,
+                    feelsLike: currentData.feelsLike
+                  }
                   : undefined
               }
             />
