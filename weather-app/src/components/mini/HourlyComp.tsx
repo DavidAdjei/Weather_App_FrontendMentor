@@ -21,16 +21,16 @@ export const getWeatherIcon = (temp: number, unit: TempUnit) => {
         unit === 'fahrenheit' ? (temp - 32) * (5 / 9) : temp
 
     // ❄️ Extreme cold
-    if (tempC <= -18) return Snow
+    if (tempC < 0) return Snow
 
     // ❄️ Freezing
-    if (tempC <= 0) return Storm
+    if (tempC <= 5) return Storm
 
     // 🌧 Near freezing (wet conditions)
-    if (tempC <= 5) return Rain
+    if (tempC <= 8) return Rain
 
     // 🌫 Cold & damp
-    if (tempC <= 10) return Drizzle
+    if (tempC <= 15) return Drizzle
 
     // ☁️ Cool
     if (tempC <= 18) return Fog

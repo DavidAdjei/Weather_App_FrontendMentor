@@ -75,7 +75,7 @@ export default function MainBanner ({
         }}
       >
         <div>
-          <h2 className='text-[2.8rem] text-center md:text-start md:text-5xl font-bold text-neutral-0'>
+          <h2 className='text-4xl text-center md:text-start font-bold text-neutral-0'>
             {weather.city}, {weather.country}
           </h2>
 
@@ -93,10 +93,10 @@ export default function MainBanner ({
           <img
             src={getWeatherIcon(weather.temperature, units.temperature)}
             alt='weather icon'
-            className='w-35 h-35 md:w-20 md:h-20'
+            className='w-20 h-20'
           />
 
-          <span className='text-8xl md:text-6xl font-bold text-neutral-0'>
+          <span className='text-6xl font-bold text-neutral-0'>
             {Math.round(weather.temperature)}°
           </span>
         </div>

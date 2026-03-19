@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import type { CurrentWeather, DailyWeather, HourlyWeather, Location, WeatherUnits } from '../types/types'
 
-export const useWeather = (units: WeatherUnits, selectedDay: string, setLocation: (location: Location) => void, setError: (error: string) => void, location: Location
+export const useWeather = (units: WeatherUnits, selectedDay: string, setLocation: (location: Location) => void, setError: (error: string) => void, location: Location | null
 ) => {
   const [currentData, setCurrentData] = useState<CurrentWeather | null>(null)
   const [hourlyData, setHourlyData] = useState<HourlyWeather | null>(null)
