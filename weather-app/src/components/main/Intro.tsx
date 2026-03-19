@@ -9,6 +9,13 @@ type Props = {
   setLocation: (location: Location) => void
 }
 
+type Loc = {
+  name: string
+  country: string
+  latitude: string
+  longitude: string
+}
+
 export const Intro = ({ setLocation }: Props) => {
   const [query, setQuery] = useState("")
   const [results, setResults] = useState<Location[]>([])
@@ -25,11 +32,24 @@ export const Intro = ({ setLocation }: Props) => {
       try {
         setLoading(true)
 
-        const res = await axios.get(
+        const { data } = await axios.get(
           `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=5&language=en&format=json`
         )
+        let responses = []
+        if (data.results) {
+          console.log({ results: data.results })
+          const newData = data.results.map((loc: Loc) => (
+            {
+              city: loc.name,
+              country: loc.country,
+              latitude: loc.latitude,
+              longitude: loc.longitude
+            }
+          ))
 
-        setResults(res.data.results || [])
+          responses = newData;
+        }
+        setResults(responses || [])
         setShowDropdown(true)
       } catch (err) {
         console.error(err)
