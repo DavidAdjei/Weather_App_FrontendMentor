@@ -56,7 +56,7 @@ function App () {
       {error ? (
         <ApiError />
       ) : (
-        <main>
+        <div>
           <Intro setLocation={setLocation} />
           <div className='w-full flex justify-center px-5 md:px-20 pb-10'>
             <div className='w-full max-w-7.5xl grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-6'>
@@ -103,7 +103,7 @@ function App () {
               </div>
             </div>
           </div>
-        </main>
+        </div>
       )}
     </div>
   )
