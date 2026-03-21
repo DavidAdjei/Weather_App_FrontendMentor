@@ -9,7 +9,7 @@ type Props = {
   setUnits: (units: WeatherUnits) => void
 }
 
-export default function UnitsDropdown({ units, setUnits }: Props) {
+export default function UnitsDropdown ({ units, setUnits }: Props) {
   const [open, setOpen] = useState(false)
 
   const updateUnit = (key: keyof WeatherUnits, value: string) => {
@@ -69,6 +69,9 @@ export default function UnitsDropdown({ units, setUnits }: Props) {
       {/* Button */}
       <button
         onClick={() => setOpen(!open)}
+        aria-haspopup='menu'
+        aria-expanded={open}
+        aria-controls='units-menu'
         className='flex items-center gap-1 md:gap-2 bg-neutral-800 text-neutral-200 px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-neutral-700 transition text-sm md:text-base
         focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 focus:ring-offset-neutral-700'
       >
@@ -81,7 +84,12 @@ export default function UnitsDropdown({ units, setUnits }: Props) {
 
       {/* Dropdown */}
       {open && (
-        <div className='z-40 absolute right-0 mt-3 w-64 bg-neutral-800 rounded-xl p-4 shadow-lg flex flex-col gap-4'>
+        <div
+          id='units-menu'
+          role='menu'
+          tabIndex={-1}
+          className='z-40 absolute right-0 mt-3 w-64 bg-neutral-800 rounded-xl p-4 shadow-lg flex flex-col gap-4'
+        >
           <p className='text-neutral-200 text-sm font-semibold'>
             Switch to Imperial
           </p>
