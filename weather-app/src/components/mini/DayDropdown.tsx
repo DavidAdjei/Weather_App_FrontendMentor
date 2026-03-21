@@ -23,6 +23,7 @@ export default function DayDropdown ({ selectedDay, setSelectedDay }: Props) {
     <div className='relative z-10'>
       {/* Button */}
       <button
+        type='button'
         onClick={() => setOpen(!open)}
         className='z=20 flex items-center gap-4 justify-between bg-neutral-800 text-neutral-200 px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-neutral-700 transition text-sm md:text-base'
       >
@@ -35,6 +36,7 @@ export default function DayDropdown ({ selectedDay, setSelectedDay }: Props) {
         <div className='z-60 absolute right-2.5 p-1.5 mt-2 w-35 bg-neutral-800 rounded-lg shadow-lg overflow-hidden'>
           {days.map(day => (
             <button
+              type='button'
               key={day}
               onClick={() => {
                 setSelectedDay(day)

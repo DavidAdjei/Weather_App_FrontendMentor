@@ -68,6 +68,7 @@ export default function UnitsDropdown ({ units, setUnits }: Props) {
     <div className='relative'>
       {/* Button */}
       <button
+        type='button'
         onClick={() => setOpen(!open)}
         aria-haspopup='menu'
         aria-expanded={open}

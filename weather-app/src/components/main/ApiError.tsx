@@ -20,7 +20,7 @@ export default function ApiError () {
           We couldn't connect to the sever (API error). Please try again in a
           few moments.
         </p>
-        <button aria-describedby="error-heading" onClick={refreshPage} className='flex items-center gap-2 md:gap-4 bg-neutral-800 text-neutral-200 px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-neutral-700 transition text-sm md:text-base'>
+        <button type='button' aria-describedby="error-heading" onClick={refreshPage} className='flex items-center gap-2 md:gap-4 bg-neutral-800 text-neutral-200 px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-neutral-700 transition text-sm md:text-base'>
           <img src={Retry} alt="" aria-hidden="true" />
           <span>Retry</span>
         </button>
